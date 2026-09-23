@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hi, I'm Shannen — Personal Journal</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #120d0b;
+      --bg-soft: #1a1410;
+      --card: rgba(30,22,18,.7);
+      --text: #fbf7f2;
+      --muted: #d4c2b5;
+      --dim: #998375;
+      --border: #2e211b;
+      --accent: #d95338;
+      --accent-soft: rgba(217,83,56,.12);
+      --sans: 'Inter', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg: #fdfbf7;
+      --bg-soft: #f6f0e8;
+      --card: rgba(255,255,255,.85);
+      --text: #231916;
+      --muted: #615047;
+      --dim: #9e8d83;
+      --border: #e8ded4;
+      --accent: #c0392b;
+      --accent-soft: rgba(192,57,43,.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      transition: .3s;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .3;
+      background-image:
+        radial-gradient(var(--border) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+      padding: 15px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-family: var(--mono);
+      font-size: 14px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      padding: 4px 9px;
+      border: 1px solid var(--accent-soft);
+      border-radius: 20px;
+    }
+
+    .status::before {
+      content: "●";
+      margin-right: 5px;
+    }
+
+    button {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      padding: 7px 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* GENERAL */
+    section {
+      padding: 90px 7%;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .label {
+      display: block;
+      color: var(--accent);
+      font: 11px var(--mono);
+      margin-bottom: 10px;
+      letter-spacing: .5px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 80px);
+      line-height: 1;
+      letter-spacing: -.04em;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 72vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 110px;
+    }
+
+    .hero-content {
+      max-width: 700px;
+    }
+
+    .system {
+      display: inline-block;
+      font: 11px var(--mono);
+      color: var(--dim);
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 25px;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: auto;
+      font-size: clamp(17px, 2vw, 20px);
+    }
+
+    /* ABOUT */
+    .about {
+      background: var(--bg-soft);
+      border-block: 1px solid var(--border);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 50px;
+    }
+
+    .about-text p {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .meta {
+      margin-top: 20px;
+      padding: 15px 18px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--card);
+      font: 12px/1.8 var(--mono);
+      color: var(--dim);
+    }
+
+    .meta b {
+      color: var(--accent);
+    }
+
+    /* INTERESTS */
+    .interests {
+      text-align: center;
+    }
+
+    .interest-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .interest {
+      padding: 20px 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .interest:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+
+    .interest i {
+      display: block;
+      color: var(--dim);
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .interest:hover i {
+      color: var(--accent);
+    }
+
+    .interest span {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .tag {
+      margin-top: 4px;
+      color: var(--dim);
+      font: 9px var(--mono);
+    }
+
+    /* BOTTOM */
+    .bottom {
+      padding: 70px 7%;
+      background: var(--bg-soft);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .bottom p {
+      max-width: 600px;
+      margin: auto;
+      font-size: 19px;
+    }
+
+    .quote {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 10px 18px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent);
+      font: 11px var(--mono);
+      background: var(--card);
+    }
+
+    footer {
+      padding: 18px;
+      text-align: center;
+      color: var(--dim);
+      font: 10px var(--mono);
+      border-top: 1px solid var(--border);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      padding: 10px 15px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font: 11px var(--mono);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: .25s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+    @media (max-width: 700px) {
+      nav {
+        padding: 13px 5%;
+      }
+
+      .status {
+        display: none;
+      }
+
+      section {
+        padding: 70px 6%;
+      }
+
+      .hero {
+        min-height: 65vh;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .interest-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .interest-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .brand {
+        font-size: 12px;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="brand">
+      <i class="fa-solid fa-leaf" style="color:var(--accent)"></i>
+      shannen <span>// journal</span>
+    </a>
+
+```
+<div class="nav-right">
+  <div class="status">NYC NODE</div>
+
+  <button id="themeToggle">
+    <i class="fa-regular fa-moon"></i>
+    <span id="themeText">LIGHT</span>
+  </button>
+</div>
+```
+
+  </nav>
+
+  <!-- HERO -->
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="system">● sys.status: active</div>
+
+```
+  <h1>Hi, I’m Shannen</h1>
+
+  <p>
+    New York is home now. I'm learning, growing, and becoming
+    while creating a life that feels true to me.
+  </p>
+</div>
+```
+
+  </section>
+
+  <!-- ABOUT + INTERESTS -->
+
+  <section class="about">
+    <div class="container">
+
+```
+  <div class="about-grid">
+    <div>
+      <span class="label">01 // ABOUT</span>
+      <h2>A little<br>about me.</h2>
+    </div>
+
+    <div class="about-text">
+      <p>
+        I love traveling, dogs, new experiences, good energy,
+        and being inspired by people who genuinely love what they do.
+      </p>
+
+      <p>
+        I'm always looking for something new to learn,
+        somewhere new to explore, or a reason to slow down
+        and appreciate where I am.
+      </p>
+
+      <div class="meta">
+        <div><b>location:</b> "New York, NY"</div>
+        <div><b>focus:</b> "Peace, Growth & Presence"</div>
+        <div><b>season:</b> "Autumn Mood"</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:70px; text-align:center;">
+    <span class="label">02 // THINGS I LOVE</span>
+    <h2>The little things.</h2>
+
+    <div class="interest-grid">
+
+      <div class="interest" onclick="showToast('Shannen loves Traveling')">
+        <i class="fa-solid fa-plane-departure"></i>
+        <span>Traveling</span>
+        <small class="tag">EXPLORE</small>
+      </div>
+
+      <div class="interest" onclick="showToast('Shannen loves Dogs')">
+        <i class="fa-solid fa-dog"></i>
+        <span>Dogs</span>
+        <small class="tag">COMPANIONS</small>
+      </div>
+
+      <div class="interest" onclick="showToast('Shannen loves Good Coffee')">
+        <i class="fa-solid fa-mug-hot"></i>
+        <span>Good Coffee</span>
+        <small class="tag">MORNINGS</small>
+      </div>
+
+      <div class="interest" onclick="showToast('Shannen loves New Experiences')">
+        <i class="fa-solid fa-compass"></i>
+        <span>New Experiences</span>
+        <small class="tag">DISCOVERY</small>
+      </div>
+
+      <div class="interest" onclick="showToast('Shannen loves Cooking')">
+        <i class="fa-solid fa-utensils"></i>
+        <span>Cooking</span>
+        <small class="tag">CREATION</small>
+      </div>
+
+      <div class="interest" onclick="showToast('Shannen loves Good Energy')">
+        <i class="fa-solid fa-sun"></i>
+        <span>Good Energy</span>
+        <small class="tag">VIBES</small>
+      </div>
+
+      <div class="interest" onclick="showToast('Shannen loves Slow Mornings')">
+        <i class="fa-solid fa-cloud-sun"></i>
+        <span>Slow Mornings</span>
+        <small class="tag">PEACE</small>
+      </div>
+
+      <div class="interest" onclick="showToast('Shannen loves New York')">
+        <i class="fa-solid fa-city"></i>
+        <span>New York</span>
+        <small class="tag">HOME</small>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <!-- FINAL MESSAGE -->
+
+  <section class="bottom">
+    <div class="container">
+
+```
+  <span class="label">03 // EVERY DAY</span>
+
+  <h2>Finding something new every day.</h2>
+
+  <p>
+    Not here for the status or the money chase,
+    just slow mornings, good coffee, and real peace.
+  </p>
+
+  <div class="quote">
+    "Making a life that feels like mine."
+  </div>
+
+</div>
+```
+
+  </section>
+
+  <footer>
+    © 2026 Shannen. Built with peace & purpose.
+  </footer>
+
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-leaf" style="color:var(--accent)"></i>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const button = document.getElementById("themeToggle");
+    const text = document.getElementById("themeText");
+    const icon = button.querySelector("i");
+
+    button.addEventListener("click", () => {
+      const light = root.getAttribute("data-theme") === "light";
+
+      root.setAttribute("data-theme", light ? "dark" : "light");
+
+      text.textContent = light ? "LIGHT" : "DARK";
+      icon.className = light
+        ? "fa-regular fa-moon"
+        : "fa-regular fa-sun";
+
+      showToast(light
+        ? "Switched to Dark Mode"
+        : "Switched to Light Mode"
+      );
+    });
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+
+      document.getElementById("toastMsg").textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(window.toastTimer);
+
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2200);
+    }
+  </script>
+
+</body>
+</html>
